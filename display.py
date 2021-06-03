@@ -27,7 +27,13 @@ def display_Update(page):
             if 'checked' in element.keys():
                 if element['checked'] == True:
                     oled.blit(element['data'], element['position'][0]*8, element['position'][1]*8)
-
+        elif fmt == 2:          # 文本元素处理
+            is_invert = False                          # 反向显示标志
+            if 'checked' in element.keys():
+                if element['checked'] == True:         # 选中项反向显示
+                    is_invert = True
+            oled.draw_chinese_fast(element['text'], element['position'][0], element['position'][1], invert=is_invert, font_size=16)
+                    
 
     #sw_Update()
     oled.show()                 # 更新显示

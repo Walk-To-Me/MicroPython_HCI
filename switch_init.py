@@ -27,6 +27,7 @@ def sw2Event_Get():             # 获取sw2当前事件
 
 def sw1_Handle(t):               # 按键1中断处理
     pyb.disable_irq()           # 关闭中断
+    print('debug info: button1 down')
     change_Handle()
     time.sleep_ms(50)           # 延时去抖
     pyb.enable_irq()            # 打开中断

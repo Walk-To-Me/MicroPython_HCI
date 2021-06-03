@@ -56,6 +56,14 @@ App = [
      'position': (4, 0), 'id': 3, 'handle':'JumpPage_Handle', 'checked': False},
 ]
 
+LiquidLevelPage = [
+    {'format': 2, 'href': '/App/LiquidLevelPage/LiquidLevel_View', 'text': '显示液位',
+     'position': (0, 0), 'id': 0, 'handle': 'JumpPage_Handle', 'checked': True},
+    {'format': 2, 'href': '/App/LiquidLevelPage/LiquidLevel_Set', 'text': '设置液位',
+     'position': (0, 1), 'id': 1, 'handle': 'JumpPage_Handle', 'checked': False},
+    {'format': 2, 'href': '/App/LiquidLevelPage', 'text': '退出',
+     'position': (0, 2), 'id': 2, 'handle': 'JumpPage_Handle', 'checked': False},
+]
 
 
 

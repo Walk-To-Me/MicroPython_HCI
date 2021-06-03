@@ -1,7 +1,7 @@
 from display import *
 from pages import *
 
-route_now = '/App'
+route_now = '/App/LiquidLevelPage'
 
 def routeToPage(route):         # 获取当前页面
     page_now = None
@@ -18,7 +18,7 @@ def change_Handle():
     max_id = 0                                  # 页面中元素最大id
     checked_id = 0                              # 被选中项元素id
     page_now = routeToPage(route_now)
-    
+    print('debug info: change_Handle()')
     for element in page_now:
         if 'id' in element.keys():
             if element['id'] > max_id:          # 获取当前页面中所有可选项个数
