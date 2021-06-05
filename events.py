@@ -1,7 +1,7 @@
 from display import *
 from pages import *
 
-route_now = '/App/LiquidLevelPage'
+route_now = '/App'
 
 def routeToPage(route):         # 获取当前页面
     page_now = None
@@ -10,6 +10,14 @@ def routeToPage(route):         # 获取当前页面
     except IndexError:
         print('路由格式错误')
     return eval(page_now)
+
+
+def route_now_Set(route):       # 设置当前路由
+    global route_now
+    route_now = route
+
+def route_now_Get():            # 获取当前路由
+    return route_now
 
 
 
@@ -40,12 +48,35 @@ def change_Handle():
     display_Update(page_now)
 
 
-def JumpPage_Handle():
-    pass
+def JumpPage_Handle(element):                                 # 页面跳转
+    route_now_Set(element['href'])
+    for element in routeToPage(route_now):
+        if 'id' in element.keys():
+            if 'checked' in element.keys():
+                if element['id'] == 0:
+                    element['checked'] = True
+                else:
+                    element['checked'] = False
+                
+    display_Update(routeToPage(route_now))
 
-def Exit_Handle():
-    pass
+def Exit_Handle(element):                                     # 退出页面
+    route_now_Set(element['href'])
+    display_Update(routeToPage(route_now))
 
+def SigleDataTest(element):                                   # 单个数据测试
+    element['data'] += 1
+    element['text'] = str(element['data'])
+    display_Update(routeToPage(route_now))
+
+def ListDataTest(element):                                    # 列表数据测试
+    if eval(element['text']) in element['data']:
+        index = element['data'].index(eval(element['text']))  # 获取当前数据索引
+        if index < len(element['data'])-1:                    # 获取列表中下一个数据
+            element['text'] = str(element['data'][index + 1])
+        else:
+            element['text'] = str(element['data'][0])  
+    display_Update(routeToPage(route_now))
 
 
 

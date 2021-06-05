@@ -6,18 +6,20 @@ import pyb, time
 sw1 = Pin(Pin.cpu.F6, Pin.IN, Pin.PULL_UP)
 sw2 = Pin(Pin.cpu.F7, Pin.IN, Pin.PULL_UP)
 sw1_event = change_Handle
-sw2_event = None
+sw2_event = Exit_Handle
 
 
 
 
 def sw1Event_Set(value):        # 设置sw1当前事件
+    global sw1_event
     sw1_event = value
 
 def sw1Event_Get():             # 获取sw1当前事件
     return sw1_event
 
 def sw2Event_Set(value):        # 设置sw2当前事件
+    global sw2_event
     sw2_event = value
 
 def sw2Event_Get():             # 获取sw2当前事件
@@ -29,13 +31,23 @@ def sw1_Handle(t):               # 按键1中断处理
     pyb.disable_irq()           # 关闭中断
     print('debug info: button1 down')
     change_Handle()
-    time.sleep_ms(50)           # 延时去抖
+    time.sleep_ms(100)           # 延时去抖
     pyb.enable_irq()            # 打开中断
+    route_now = route_now_Get()
+    for element in routeToPage(route_now):
+        if element['checked'] == True:
+            sw2Event_Set(eval(element['handle']))
+            print(element['handle'])
+    sw_Update()
 
 def sw2_Handle(t):               # 按键2中断处理
     pyb.disable_irq()           # 关闭中断
-    sw2Event_Get()()
-    time.sleep_ms(50)           # 延时去抖
+    route_now = route_now_Get()
+    for element in routeToPage(route_now):
+        if element['checked'] == True:
+            sw2Event_Get()(element)
+            break
+    time.sleep_ms(100)           # 延时去抖
     pyb.enable_irq()            # 打开中断
 
 
@@ -44,6 +56,7 @@ sw2.irq(trigger=Pin.IRQ_FALLING, handler=sw2_Handle)
  
 
 def sw_Update():
-    sw1.irq(sw1_Handle)
-    sw2.irq(sw2_Handle)
+    #sw1.irq(handler=sw1_Handle)
+    sw2.irq(trigger=Pin.IRQ_FALLING, handler=sw2_Handle)
+
 

@@ -61,8 +61,44 @@ LiquidLevelPage = [
      'position': (0, 0), 'id': 0, 'handle': 'JumpPage_Handle', 'checked': True},
     {'format': 2, 'href': '/App/LiquidLevelPage/LiquidLevel_Set', 'text': '设置液位',
      'position': (0, 1), 'id': 1, 'handle': 'JumpPage_Handle', 'checked': False},
-    {'format': 2, 'href': '/App/LiquidLevelPage', 'text': '退出',
+    {'format': 2, 'href': '/App', 'text': '退出',
+     'position': (0, 2), 'id': 2, 'handle': 'Exit_Handle', 'checked': False},
+]
+
+TemperaturePage = [
+    {'format': 2, 'href': '/App/TemperaturePage/Temperature_View', 'text': '显示温度',
+     'position': (0, 0), 'id': 0, 'handle': 'JumpPage_Handle', 'checked': True},
+    {'format': 2, 'href': '/App/TemperaturePage/Temperature_Set', 'text': '设置温度',
+     'position': (0, 1), 'id': 1, 'handle': 'JumpPage_Handle', 'checked': False},
+    {'format': 2, 'href': '/App/TemperaturePage/Temperature_Save', 'text': '保存数据',
      'position': (0, 2), 'id': 2, 'handle': 'JumpPage_Handle', 'checked': False},
+    {'format': 2, 'href': '/App', 'text': '退出',
+     'position': (0, 3), 'id': 3, 'handle': 'Exit_Handle', 'checked': False},
+]
+
+ClockPage = [
+    {'format': 2, 'href': '/App/ClockPage/ClockPage_View', 'text': '显示时间',
+     'position': (0, 0), 'id': 0, 'handle': 'JumpPage_Handle', 'checked': True},
+    {'format': 2, 'href': '/App/ClockPage/ClockPage_Set', 'text': '设置时间',
+     'position': (0, 1), 'id': 1, 'handle': 'JumpPage_Handle', 'checked': False},
+    {'format': 2, 'href': '/App', 'text': '退出',
+     'position': (0, 2), 'id': 2, 'handle': 'Exit_Handle', 'checked': False},
+]
+
+WiFiPage = [
+    {'format': 2, 'href': '/App/WiFiPage/WiFiPage_Connect', 'text': '连接WiFi',
+     'position': (0, 0), 'id': 0, 'handle': 'JumpPage_Handle', 'checked': True},
+    {'format': 2, 'href': '/App', 'text': '退出',
+     'position': (0, 1), 'id': 1, 'handle': 'Exit_Handle', 'checked': False},
+]
+
+LiquidLevel_View = [
+    {'format': 3, 'text': '45', 'data': 45, 'position': (0, 0), 'id': 0,
+     'handle': 'SigleDataTest', 'checked': True},
+    {'format': 3, 'text': '10', 'data': [10, 20, 30, 40, 50], 'position': (0, 1),
+     'id': 1, 'handle': 'ListDataTest', 'checked': False},
+    {'format': 2, 'href': '/App/LiquidLevelPage', 'text': '退出',
+     'position': (0, 2), 'id': 2, 'handle': 'Exit_Handle', 'checked': False},
 ]
 
 
