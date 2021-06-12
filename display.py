@@ -1,6 +1,6 @@
-# 2021年6月3日 00点00分
-# 人机交互V1.0
-# 创建工程
+# 2021年6月12日 23点00分
+# 人机交互V1.1
+# 添加字库，优化按键去抖，增加404 Not Found界面
 # Walk-To-Me
 
 from oled_init import *
@@ -23,12 +23,12 @@ def display_Update(page):
             if 'checked' in element.keys():
                 if element['checked'] == True:         # 选中项反向显示
                     is_invert = True
-            oled.draw_chinese_fast(element['text'], element['position'][0], element['position'][1], invert=is_invert, font_size=16)
+            oled.draw_text(element['text'], element['position'][0], element['position'][1], invert=is_invert, font_size=16)
         elif fmt == 3:
             if 'checked' in element.keys():
                 if element['checked'] == True:         # 选中项反向显示
                     is_invert = True
-            oled.draw_chinese_fast(element['text'], element['position'][0], element['position'][1], invert=is_invert, font_size=16)
+            oled.draw_text(element['text'], element['position'][0], element['position'][1], invert=is_invert, font_size=16)
 
     oled.show()                 # 更新显示
 
