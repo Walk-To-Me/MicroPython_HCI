@@ -1,4 +1,4 @@
 # main.py -- put your code here!
 import display, oled_init, switch_init, pages
 
-display.display_Update(pages.App)
+display.display_Update(pages.App)   # 初始化界面
