@@ -29,26 +29,32 @@ def sw2Event_Get():             # 获取sw2当前事件
 
 def sw1_Handle(t):               # 按键1中断处理
     pyb.disable_irq()           # 关闭中断
-    print('debug info: button1 down')
-    change_Handle()
-    time.sleep_ms(100)           # 延时去抖
+    time.sleep_ms(20)           # 延时去抖
     pyb.enable_irq()            # 打开中断
-    route_now = route_now_Get()
-    for element in routeToPage(route_now):
-        if element['checked'] == True:
-            sw2Event_Set(eval(element['handle']))
-            print(element['handle'])
-    sw_Update()
+    if (not sw1.value()):
+        print('debug info: button1 down')
+        change_Handle()
+        
+        route_now = route_now_Get()
+        for element in routeToPage(route_now):
+            if element['checked'] == True:
+                sw2Event_Set(eval(element['handle']))
+                print(element['handle'])
+        sw_Update()
 
 def sw2_Handle(t):               # 按键2中断处理
-    pyb.disable_irq()           # 关闭中断
-    route_now = route_now_Get()
-    for element in routeToPage(route_now):
-        if element['checked'] == True:
-            sw2Event_Get()(element)
-            break
-    time.sleep_ms(100)           # 延时去抖
-    pyb.enable_irq()            # 打开中断
+    pyb.disable_irq()            # 关闭中断
+    time.sleep_ms(20)            # 延时去抖
+    pyb.enable_irq()             # 打开中断
+    if (not sw2.value()):
+        route_now = route_now_Get()
+        for element in routeToPage(route_now):
+            if 'id' in element.keys():
+                if 'checked' in element.keys():
+                    if element['checked'] == True:
+                        sw2Event_Get()(element)
+                        break
+    
 
 
 sw1.irq(trigger=Pin.IRQ_FALLING, handler=sw1_Handle)
