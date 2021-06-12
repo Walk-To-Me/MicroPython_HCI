@@ -2,7 +2,7 @@
 
 from micropython import const
 import framebuf
-import font_new
+
 
 # register definitions
 SET_CONTRAST = const(0x81)
@@ -104,40 +104,54 @@ class SSD1306(framebuf.FrameBuffer):
         self.write_cmd(self.pages - 1)
         self.write_data(self.buffer)
 
-    def draw_chinese_fast(self,ch_str,x_axis,y_axis,invert=False,font_size=16):
-          offset_=0
-          size = 0
-          y_axis=y_axis*16
-          x_axis=x_axis*8
-          for k in ch_str:
+    def draw_text(self,ch_str,x_axis,y_axis,invert=False,font_size=16):
+        offset_=0
+        size = 0              # 文字宽度，汉字16位，字符8位
+        byte_data = b''       # 文字取模数据
+        y_axis=y_axis*16
+        x_axis=x_axis*8
+        for ch in ch_str:
             count = 0
-            code = 0x00#将中文转成16进制编码
-            data_code = k.encode("utf-8")
+            data_code = ch.encode("utf-8")
             if len(data_code) == 3:
-                size = font_size//16*16#中文宽度占16个
-                code |= data_code[0]<<16
-                code |= data_code[1]<<8
-                code |= data_code[2]
+                size = font_size//16*16      # 汉字宽度占16个
             else:
-                size = font_size//16*8#英文宽度占8个
-                code |= data_code[0]
-            
+                size = font_size//16*8       # 字符宽度占8个
+                
             try:
-              if font_size == 16:
-                  byte_data=font_new.byte2.get(code)
-              elif font_size == 32:
-                  byte_data=font_new.byte3.get(code)
-              byte = bytearray(byte_data)
-              if invert:
-                  for item in byte:
-                      item = ~item
-                      byte[count] = item
-                      count += 1
-              buf = framebuf.FrameBuffer(byte,size,font_size,framebuf.MONO_HLSB)
-              self.blit(buf,x_axis+offset_,y_axis)
+                if font_size == 16:                 # 字号16
+                    if size == 16:
+                        with open('hanzi_index.bin', 'rb') as file:   # 打开汉字字库索引文件
+                            cnt = 0
+                            index = 0
+                            lst = file.read(300)
+                            while data_code not in lst:
+                                lst = file.read(300)     # 一次读300字节，ram不够可修改更小
+                                index = index + 300//3
+                            cnt = lst.index(data_code)
+                            index = cnt // 3 + index     # 获取汉字索引
+                        with open('hanzi.bin', 'rb') as file:    # 打开汉字字库索引文件
+                            file.seek(32 * index)        # 定位汉字位置
+                            byte_data = file.read(32)    # 获取汉字取模数据（32字节）
+                    elif size == 8:
+                        with open('char.bin', 'rb') as file:   # 打开字符字库文件
+                            file.seek(16*(ord(ch)-32))         # 通过ASCALL码获取索引
+                            byte_data = file.read(16)    # 获取字符取模数据（16字节）
+
+                elif font_size == 32:                  # 字号32
+                    pass                               # 暂未开发，需添加字库
+      
+                byte = bytearray(byte_data)
+                if invert:
+                    for item in byte:
+                        item = ~item
+                        byte[count] = item
+                        count += 1
+                buf = framebuf.FrameBuffer(byte,size,font_size,framebuf.MONO_HLSB)
+                self.blit(buf,x_axis+offset_,y_axis)
             except:
-              print(code)
-            
+                print(data_code)  # 未能正常显示的文字的UTF-8编码
+                
             offset_+=size
 
 
