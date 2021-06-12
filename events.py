@@ -4,12 +4,17 @@ from pages import *
 route_now = '/App'
 
 def routeToPage(route):         # 获取当前页面
-    page_now = None
+    page_now = ''
+    page = NotFoundPage
     try:
         page_now = route.rsplit('/', 1)[1] # 获取路由中最后页面
     except IndexError:
         print('路由格式错误')
-    return eval(page_now)
+    try:
+        page = eval(page_now)
+    except NameError:
+        print('该页面未定义，%s' % page_now)
+    return page
 
 
 def route_now_Set(route):       # 设置当前路由
@@ -19,7 +24,14 @@ def route_now_Set(route):       # 设置当前路由
 def route_now_Get():            # 获取当前路由
     return route_now
 
-
+def page_checked_Clear(page):       # 清除页面按钮状态
+    for element in page:
+        if 'id' in element.keys():
+            if 'checked' in element.keys():
+                if element['id'] == 0:
+                    element['checked'] = True
+                else:
+                    element['checked'] = False
 
 
 def change_Handle():
@@ -50,19 +62,16 @@ def change_Handle():
 
 def JumpPage_Handle(element):                                 # 页面跳转
     route_now_Set(element['href'])
-    for element in routeToPage(route_now):
-        if 'id' in element.keys():
-            if 'checked' in element.keys():
-                if element['id'] == 0:
-                    element['checked'] = True
-                else:
-                    element['checked'] = False
-                
-    display_Update(routeToPage(route_now))
+    page = routeToPage(route_now)
+    page_checked_Clear(page)
+    display_Update(page)
+
 
 def Exit_Handle(element):                                     # 退出页面
     route_now_Set(element['href'])
-    display_Update(routeToPage(route_now))
+    page = routeToPage(route_now)
+    page_checked_Clear(page)
+    display_Update(page)
 
 def SigleDataTest(element):                                   # 单个数据测试
     element['data'] += 1
