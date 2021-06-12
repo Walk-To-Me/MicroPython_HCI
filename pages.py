@@ -44,6 +44,11 @@ with open('wifi.pbm', 'r') as f:
     data = bytearray(f.read())
 app_image['WiFi'] = framebuf.FrameBuffer(data, width, height, framebuf.MONO_HLSB)
 
+NotFoundPage =[
+    {'format': 2, 'text': '404 Not Found', 'position': (1, 1)},
+    {'format': 2, 'href': '/App', 'text': '主页',
+     'position': (12, 3), 'id': 0, 'handle': 'JumpPage_Handle', 'checked': True},
+]
 
 App = [
     {'format': 1, 'href': '/App/LiquidLevelPage', 'data': app_image['LiquidLevel'],
